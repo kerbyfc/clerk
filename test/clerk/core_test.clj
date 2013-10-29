@@ -1,6 +1,6 @@
-(ns vertxd.core-test
+(ns clerk.core-test
   (:require [clojure.test :refer :all]
-            [vertxd.core :refer :all]))
+            [clerk.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

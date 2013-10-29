@@ -21,15 +21,25 @@
   [command & args]
   (let [arguments (take-while string? args)
         vars (apply hash-map (drop-while string? args))
-        process (ProcessBuilder. (apply conj [command] arguments))
-        env (.environment process)]
+        builder (ProcessBuilder. (apply conj [command] arguments))
+        env (.environment builder)]
     (when vars
       (doseq [[var value] (map identity vars)]
         (.put env (name var) (trim-newline value))))
-    (println "run " command arguments "in env "(.toString env))
-    (def p (.start process))
+    (println "run " command arguments (if vars (str "with env rewrites: " vars)))
+    (.redirectErrorStream builder true)
+    (.inheritIO builder)
+    (def process (.start builder))
     {
-     :out (read-from-reader (BufferedReader. (InputStreamReader. (.getInputStream p))))
-     :err (read-from-reader (BufferedReader. (InputStreamReader. (.getErrorStream p))))
+     :out (BufferedReader. (InputStreamReader. (.getInputStream process)))
+     :err (BufferedReader. (InputStreamReader. (.getErrorStream process)))
     }
     ))
+
+(defmacro read-process
+  [proc data]
+  `(read-from-reader (~data ~proc)))
+
+
+
+
