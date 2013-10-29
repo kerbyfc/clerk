@@ -1,6 +1,5 @@
 (ns clerk
-  (use [reval.core :as reval]
-       [clojure.string :only [trim-newline]]
+  (use [clojure.string :only [trim-newline]]
        [clojure.tools.logging :only [info error]])
   (import [java.lang ProcessBuilder]
           [java.io BufferedReader InputStreamReader])
