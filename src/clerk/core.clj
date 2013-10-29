@@ -26,15 +26,12 @@
     (when vars
       (doseq [[var value] (map identity vars)]
         (.put env (name var) (trim-newline value))))
-    (println "run " command arguments (if vars (str "with env rewrites: " vars)))
+    (println "exec" command arguments (if vars (str "with env rewrites: " vars)))
     (.redirectErrorStream builder true)
     (.inheritIO builder)
     (def process (.start builder))
-    {
-     :out (BufferedReader. (InputStreamReader. (.getInputStream process)))
-     :err (BufferedReader. (InputStreamReader. (.getErrorStream process)))
-    }
-    ))
+    {:out (BufferedReader. (InputStreamReader. (.getInputStream process)))
+     :err (BufferedReader. (InputStreamReader. (.getErrorStream process)))}))
 
 (defmacro read-process
   [proc data]
