@@ -1,4 +1,4 @@
-(ns clerk
+(ns clerk.core
   (use [clojure.string :only [trim-newline]]
        [clojure.tools.logging :only [info error]])
   (import [java.lang ProcessBuilder]
